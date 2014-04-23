@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <title>Automating development using Grunt</title>
+        <title>Automating development tasks using Grunt</title>
         <meta name="author" content="Ignacio Rivas">
 
         <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -55,7 +55,7 @@
             <div class="slides">
 
                 <section id="cover" data-background="" data-background-size="">
-                    <h1>Automating development using Grunt</h1>
+                    <h1>Automating development tasks using Grunt</h1>
                     <p>
                         <a href="http://ignaciorivas.me/">Ignacio Rivas</a><br>
                         <a href="https://twitter.com/sabarasaba">@sabarasaba</a>
@@ -87,97 +87,99 @@
                 </section>
 
                 <section>
-                    <h2>Git Hooks</h2>
-                    <p>Pushing to Git remote on your server</p>
+                    <h2>Facts about Grunt:</h2>
+                    <ul>
+                        <li class="fragment">7700 Stars on github</li>
+                        <li class="fragment">900 forks</li>
+                        <li class="fragment">44 contributors</li>
+                    </ul>
+                    <p class="fragment">Almost the same amount of stars than Textmate/Symphony</p>
+                </section>
 
+                <section>
+                    <h3>And who's using it?</h3>
+
+                    <ul>
+                        <li class="fragment">Twitter</li>
+                        <li class="fragment">jQuery</li>
+                        <li class="fragment">Adobe</li>
+                        <li class="fragment">Saucelabs</li>
+                        <li class="fragment">Modernizr</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h3>How it actually looks like..</h3>
+                    <p><img src="images/Selection_008.png" alt=""></p>
+                </section>
+
+                <section>
+                    <h3>But what can we do with it ?</h3>
+
+                    <p>EVERYTHING. Even pankackes.</p>
+
+                    <ul>
+                        <li class="fragment">Linting documents (jshint, AriaLinter, csslint)</li>
+                        <li class="fragment">Optimizing images</li>
+                        <li class="fragment">Optimizing documents (concatenating js/css, minifying..)</li>
+                        <li class="fragment">TESTS, TESTS, TESTS</li>
+                        <li class="fragment">Automatically reload/rebuild on file change (watchers)</li>
+                        <li class="fragment">Precompiling templates, less, sass, ocss, etc</li>
+                        <li class="fragment">And much much more..</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h3>How do we actually use it?</h3>
+                    <p><img src="images/IMG_3529.JPG" height="50%" alt=""></p>
+                </section>
+
+                <section>
+                    <h3>Instalation is quite forward</h3>
                     <pre><code class="bash" data-trim>
-# ./git/hooks/post-receive
-cd /var/www/myapp.com
-git pull
-npm install --production
-service myapp restart
-...
+# Install nodejs and npm
+tar -zxf node-v0.6.18.tar.gz
+cd node-v0.6.18
+./configure && make && sudo make install
+
+# Install grunt
+sudo npm install -g grunt-cli
                     </code></pre>
-                    <p>Done.</p>
                 </section>
 
                 <section>
-                    <h3>Git Hooks</h3>
+                    <h3>Sample Gruntfile</h3>
+                    <pre><code class="javascript" data-trim>
+module.exports = function(grunt) {
+  'use strict';
 
-                    <h5>Pro:</h5>
-                    <ul>
-                        <li class="fragment">Easy for the developer: Just push to production (aka fire and forget)</li>
-                        <li class="fragment">Hosting-Platforms like Heroku use this method as well</li>
-                    </ul>
+  // Set grunt configuration object
+  grunt.initConfig({
 
-                    <h5 class="fragment">Con:</h5>
-                    <ul>
-                        <li class="fragment">But what happens on the server?</li>
-                        <li class="fragment">Deployment knowledge is stored separately from code</li>
-                        <li class="fragment">When deploying on multiple servers, post-receive hooks must be in sync</li>
-                    </ul>
-                </section>
+    pkg: grunt.file.readJSON('package.json'),
 
-                <section>
-                    <h3>GitHub Webhooks</h3>
-                    <p><img src="images/github-hooks1.png" alt=""></p>
-                </section>
+    copy: {
+      main: {
+        expand: true,
+        cwd: PATH_ASSETS,
+        src: '**',
+        dest: PATH_DEPLOY_ASSETS
+      }
+    }
 
-                <section>
-                    <h3>GitHub Webhooks</h3>
-                    <p><img src="images/github-hooks2.png" alt=""></p>
-                </section>
+  });
 
-                <section>
-                    <h3>GitHub Webhooks</h3>
-                    <p><img src="images/github-hooks3.png" alt=""></p>
-                </section>
+  // Load npm tasks
+  grunt.loadNpmTasks('grunt-contrib-copy');
 
-                <section>
-                    <h3>GitHub Webhooks</h3>
+  // Register current tasks
+  grunt.registerTask('default', 'build:dev');
 
-                    <h5>Pro:</h5>
-                    <ul>
-                        <li class="fragment">When the rest of your development work already resolves around GitHub, it integrates nicely into the workflow</li>
-                    </ul>
+  grunt.registerTask('build:dev', ['copy']);
+};
 
-                    <h5 class="fragment">Con:</h5>
-                    <ul>
-                        <li class="fragment">
-                            Hooks run all independently in parallel:<br>
-                            <small>E.g. if the CI hook fails, the webhook for deployment still gets triggered</small>
-                        </li>
-                        <li class="fragment">
-                            Critical dependency for your deployment:<br>
-                            <small>Remember, even GitHub is down or gets DDoS'ed from time to time</small>
-                        </li>
-                        <li class="fragment">
-                            Requires server component running update script.<br>
-                            <small>Must be secured to not accept fake payload or mess up deployment.</small>
-                        </li>
-                    </ul>
-                </section>
+                    </code></pre>
 
-                <section>
-                    <h3>Capistrano, fabric, deploy.sh, et. al.</h3>
-
-                    <ul>
-                        <li class="fragment">Remotely checks out your code from a repository</li>
-                        <li class="fragment">Directory is named after current date and/or revision</li>
-                        <li class="fragment">Symlinks it to <code>current</code></li>
-                    </ul>
-                    <br>
-                    <pre class="fragment">
-deploy_directory
-├─┬ releases
-│ ├── 20140319001122
-│ └── ...
-├─┬ shared
-│ ├── log
-│ ├── pids
-│ └── system
-└── current ⇨ releases/20140319001122
-                    </pre>
                 </section>
 
                 <section>
