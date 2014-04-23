@@ -183,439 +183,132 @@ module.exports = function(grunt) {
                 </section>
 
                 <section>
-                    <h3>Capistrano, fabric, deploy.sh, et. al.</h3>
-                    <p>Additionlly triggers scripts that can:</p>
-
-                    <ul>
-                        <li>restart the web server</li>
-                        <li>create a database and it's scheme</li>
-                        <li>install/update your app's dependencies</li>
-                    </ul>
-                </section>
-
-                <section>
-                    <h3>Capistrano, fabric, deploy.sh, et. al.</h3>
-                    <h5>Pro:</h5>
-                    <ul>
-                        <li class="fragment">Clean server side application structure (including logs, shared files, etc.)</li>
-                        <li class="fragment">Trigger arbitrary scripts before/after the deployment</li>
-                        <li class="fragment">Quickly rewind to previous deployment on error</li>
-                    </ul>
-
-                    <h5 class="fragment">Con:</h5>
-                    <ul>
-                        <li class="fragment">Introduces another language as additional dependency<br>(Capistrano: Ruby; Fabric: Python)</li>
-                    </ul>
-                </section>
-
-                <section>
-                    <h2>Run Node.js<br>(and keep it running)</h2>
-                </section>
-
-                <section>
-                    <h3>Run Node.js (and keep it running)</h3>
-
-                    <p>Start the script as a daemon:</p>
-                    <ul>
-                        <li>Nodemon/node-forever (written in Node.js)</li>
-                        <li>supervise (UNIX daemontools)</li>
-                        <li>Upstart (Ubuntu)</li>
-                    </ul>
-                </section>
-
-                <section>
-                    <h3>Example Upstart script</h3>
-                    <pre><code class="bash" data-trim>
-start on runlevel [2345]
-stop on runlevel [06]
-
-respawn
-respawn limit 5 60
-
-NODE_SCRIPT = /var/www/myapp/server.js
-LOGFILE = /var/log/myapp.log
-
-exec start-stop-daemon --start --chuid node \
-     --exec /usr/local/bin/node -- \
-     $NODE_SCRIPT &gt;&gt; $LOGFILE 2&gt;&amp;1
-                    </code></pre>
-                </section>
-
-                <section>
-                    <h3>More elaborate: PM2</h3>
-                    <p>Process manager with built-in load-balancer</p>
-
-                    <p><img src="images/pm2-list.png" alt=""></p>
-                </section>
-
-                <section>
-                    <h3>PM2</h3>
-                    <p>Monitor processes</p>
-                    <p><img src="images/pm2-monitor.png" alt=""></p>
-
-                    <aside class="notes">
-                        Question: Who should be responsible for process management (creation, restarting, monitoring, clustering)? The OS? The startup script? The application itself?
-                    </aside>
-                </section>
-
-                <section>
-                    <h3>Whatever method you use to run your applications:</h3>
-
-                    <p>Startup scripts should …</p>
-                    <ul>
-                        <li class="fragment">… be as general as possible (only path, environment, main JS file)</li>
-                        <li class="fragment">… <strong>not</strong> contain configuration settings for your application</li>
-                        <li class="fragment">… be included alongside your deployment (symlink if necessary)</li>
-                        <li class="fragment">… be kept under version control as well</li>
-                    </ul>
-
-                    <aside class="notes">
-                        Starting an app is like starting a car: The starter (keys, remote, button) doesn't need to know anything about the car. It only connects the wires which start the car.<br>
-                        However the controlling hardware must know the car's systems (engine type and performance, ABS, ESP) to act accordingly (maximum speed, braking effect, handling).
-                    </aside>
-                </section>
-
-                <section>
-                    <h3>There are at least two occasions,<br>where your app will not be available:</h3>
-
-                    <ul>
-                        <li class="fragment">While deploying a new version</li>
-                        <li class="fragment">On application errors/exceptions</li>
-                    </ul>
-                </section>
-
-                <section>
-                    <h3>Deployment</h3>
-
-                    <p>Downtime during deployment should be kept to a minimum:</p>
-                    <ul>
-                        <li class="fragment">Only deploy tested code to production</li>
-                        <li class="fragment">Automate the entire deployment process</li>
-                        <li class="fragment">Use a cluster to reload workers<br>(complete app restart is only needed if the master changes)</li>
-                    </ul>
-                    <aside class="notes">
-                        e.g. between requests or at the end of a user session
-                    </aside>
-                </section>
-
-                <section>
-                    <h3>recluster</h3>
-                    <p>wrapper around Node.js's own cluster module</p>
+                    <h3>Lets add some more tasks..</h3>
+                    <p>For linting javascript files..</p>
 
                     <pre><code class="javascript" data-trim>
-// cluster.js
-var recluster = require('recluster'),
-    path      = require('path')
-    cluster   = recluster(path.join(__dirname, 'server.js'));
-
-process.on('SIGUSR2', function() {
-    console.log('Got SIGUSR2, reloading cluster ...');
-    cluster.reload();
-});
-
-cluster.run();
-                    </code></pre>
-                    <p>Reload cluster workers: <code>kill -s SIGUSR2 &lt;cluster_pid&gt;</code></p>
-                </section>
-
-                <section>
-                    <h3>recluster</h3>
-                    <pre><code class="javascript" data-trim>
-// server.js
-server.on('close', function() {
-    // cleanup
-});
+jshint: {
+  all: [
+    'Gruntfile.js',
+    PATH_ASSETS_JS + '/**/*.js',
+    '!' + PATH_ASSETS_JS + '/vendor/**/*.js',
+  ]
+},
+...
+grunt.loadNpmTasks('grunt-contrib-jshint');
                     </code></pre>
                 </section>
 
                 <section>
-                    <h3>Errors/Exceptions</h3>
-
-                    <p>Different categories of errors:</p>
-                    <ul>
-                        <li class="fragment"><strong>Hardware/network errors:</strong><br>
-                        You're screwed, can't do much about it.</li>
-                        <li class="fragment"><strong>Component errors:</strong><br>
-                        Database not responding, files missing, wrong access privileges<br>
-                        Throw an exception, exit application (check your restart script!)</li>
-                        <li class="fragment"><strong>Programming errors:</strong><br>
-                        Testing your code is great, but some bugs will eventually slip through.<br>
-                        Hardly assessable level of impact, try to fail gracefully</li>
-                        <li class="fragment"><strong>Usage errors:</strong><br>
-                        Validate inputs, inform the user and offer guidance</li>
-                    </ul>
-                    <aside class="notes">
-                        Ideally, a simple error (request timeout, processing invalid/missing inputs) should never bring down the entire application.
-                    </aside>
-                </section>
-
-                <section>
-                <h3>Errors/Exceptions</h3>
-                    <ul>
-                        <li class="fragment">Bind error handling to individual parts of your application</li>
-                        <li class="fragment">Those parts may differ in error handling: e.g. request errors, input parsing, external APIs/services</li>
-                        <li class="fragment">Try to resolve errors with minimum impact to the overall application:
-                            <ul>
-                                <li>Unable to connect? =&gt; Notify the user, log error, try again</li>
-                                <li>Invalid input? =&gt; Notify the user, stop processing</li>
-                            </ul>
-                        </li>
-                        <li class="fragment">Try to get focused stack traces: Easier for debugging</li>
-                    </ul>
-                </section>
-
-                <section>
-                    <h3>
-                        What happens in Vegas, stays in Vegas<br>
-                        Using Domains in Node.js
-                    </h3>
-
-                    <ul>
-                        <li><code>if (err) …</code> in each callback is quite bulky</li>
-                        <li><code>try/catch</code> also doesn't work well for asynchronous code</li>
-                        <li>Encapsulate errors in domains</li>
-                    </ul>
-                </section>
-
-                <section>
-                    <h3>Using Domains in Node.js</h3>
+                    <p>And for linting our css files</p>
 
                     <pre><code class="javascript" data-trim>
-var d = require('domain').create();
-
-d.on('error', function(err) {
-  console.log('Uh, got this error:', err.message);
-  // Important: Clean up after you!
-  // ...
-});
-
-d.run(function() {
-  // Stuff that might break goes here
-});
+csslint: {
+  lax: {
+    rules: {
+      'box-sizing': false,
+      'adjoining-classes': false
+    },
+    src: [
+      PATH_ASSETS_CSS + '/*.css'
+    ]
+  }
+},
+...
+grunt.loadNpmTasks('grunt-contrib-csslint');
                     </code></pre>
-
-                    <p>Node.js API stability: <em>2 - Unstable</em></p>
                 </section>
 
                 <section>
-                    <h2>Metrics</h2>
+                    <h3>As we start to add more tasks our gruntfile will become harder to maintain</h3>
+                    <p><img src="images/unmaintanable.jpg" height="400px" alt=""></p>
+                    <h2 class="fragment">NO</h2>
+                    <h4 class="fragment">But how do we solve it ?</h4>
                 </section>
 
                 <section>
-                    <p><img src="images/alright-dave-lets-talk-numbers.png" alt="" style="width:125%"></p>
+                    <h2>We modularize!</h2>
+                    <p>Taking advantage of CommonJS modules of Node</p>
                 </section>
 
                 <section>
-                    <h3>Metrics help you to see</h3>
-                    <ul>
-                        <li class="fragment">What are people really doing?<br>How do they use the application?</li>
-                        <li class="fragment">What errors do occur?</li>
-                        <li class="fragment">Where are bottlenecks?</li>
-                        <li class="fragment">Is someone messing with your app?</li>
-                    </ul>
+                    <h3>So this:</h3>
+
+                    <pre><code class="javascript" data-trim>
+csslint: {
+  lax: {
+    rules: {
+      'box-sizing': false,
+      'adjoining-classes': false
+    },
+    src: [
+      PATH_ASSETS_CSS + '/*.css'
+    ]
+  }
+},
+
+jshint: {
+  all: [
+    'Gruntfile.js',
+    PATH_ASSETS_JS + '/**/*.js',
+    '!' + PATH_ASSETS_JS + '/vendor/**/*.js',
+  ]
+},
+...
+grunt.loadNpmTasks('grunt-contrib-csslint');
+...
+                    </code></pre>
                 </section>
 
                 <section>
-                    <h3>Metrics: Monitoring</h3>
-                    <p>What is going on?</p>
-                    <ul>
-                        <li class="fragment">CPU load, memory usage, Node.js heap size</li>
-                        <li class="fragment">HTTP requests, response times</li>
-                        <li class="fragment">Database monitoring, CPU/memory profiling, alerts</li>
-                    </ul>
+                    <h3>Becomes into:</h3>
+
+                    <pre><code class="javascript">
+module.exports = function(grunt) {
+  require('load-grunt-config')(grunt);
+  require('load-grunt-tasks')(grunt);
+};
+                    </code></pre>
+                    <h3 class="fragment">Much better uhg ?0</h3>
                 </section>
 
                 <section>
-                    <h3>Monitoring: look</h3>
-
-                    <h5>Pro:</h5>
-                    <ul><li class="fragment">Open Source</li></ul>
-
-                    <h5 class="fragment">Con:</h5>
-                    <ul><li class="fragment">Older fork of Nodetime (two years old)</li></ul>
-                </section>
-
-                <section>
-                    <h3>Monitoring: Nodetime, New Relic, etc.</h3>
-                    <p>(Commercial Products)</p>
-
-                    <h5>Pro:</h5>
-                    <ul>
-                        <li class="fragment">Many different metrics</li>
-                        <li class="fragment">Free tier</li>
-                    </ul>
-
-                    <h5 class="fragment">Con:</h5>
-                    <ul>
-                        <li class="fragment">
-                            Free tiers are very limited:<br>
-                            Nodetime: Only one process(!) can be analyzed<br>
-                            New Relic: Only 24h data retention
-                        </li>
-                        <li class="fragment">
-                            Can become quite expensive (smallest plans):<br>
-                            Nodetime: 99$/month, 5 processes sending data,<br>
-                            New Relic: 149$/month and host
-                        </li>
-                    </ul>
-                </section>
-
-                <section>
-                    <h3>Metrics: Logging</h3>
-
-                    <ul>
-                        <li class="fragment">Keep your logs in one place, either on application level or in <code>/var/log</code>.</li>
-                        <li class="fragment">Use log levels: Separate debug information from warnings and errors</li>
-                        <li class="fragment">Use a coherent log format (timestamp, level, message, payload)</li>
-                        <li class="fragment">Separate your access logs (e.g. in Express) from your application logs</li>
-                        <li class="fragment">Track your deployments with your analytics tools</li>
-                    </ul>
-                    <aside class="notes">
-                        <ul>
-                            <li>Not everyone combs through log files all the time to find changes</li>
-                            <li>Reveal different kind of metrics, e.g. "After our last deployment, mobile conversion rate increased by N%"</li>
-                        </ul>
-                    </aside>
-                </section>
-
-                <section>
-                    <h3>Metrics: Logging</h3>
-                    <h4>One possible solution: Bunyan</h4>
-
-                    <ul>
-                        <li class="fragment">All logs are stored in JSON format (timestamp, app, message, payload)</li>
-                        <li class="fragment">Uses streams, offers different targets out of the box: File, rotating file, database, etc.</li>
-                    </ul>
-                </section>
-
-                <section>
-                    <h3>Metrics: Logging</h3>
-                    <p>But …</p>
-
-                    <ul>
-                        <li class="fragment">Uncaught exceptions are still logged to <code>stderr</code></li>
-                        <li class="fragment">Other components may still use <code>console.log</code> statements</li>
-                    </ul>
-
-                    <br><br>
-
-                    <p class="fragment">
-                        <code>node app.js &gt;&gt; /var/log/myapp.log 2&gt;&amp;1</code><br>
-                        Again, multiple logs in different formats.
-                    </p>
-
-                    <aside class="notes">
-                        Still haven't found a 100% satisfying solution for myself
-                    </aside>
-                </section>
-
-                <section>
-                    <h3>Analysis of gathered metrics</h3>
-                    <p>Different log formats and destinations make data analysis difficult:</p>
+                    <h3>Now we have to create the custom tasks:</h3>
+                    <p>If we set up a directory structure like this:</p>
 
                     <pre>
-# Apache access log
-10.0.1.22 - - [15/Oct/2010:11:46:46 -0700] "GET /favicon.ico HTTP/1.1" 404 209
-fe80::6233:4bff:fe29:3173 - - [15/Oct/2010:11:46:58 -0700] "GET / HTTP/1.1" 200 44
-
-# Apache error log
-[Fri Oct 15 11:46:46 2010] [error] [client 10.0.1.22] File does not exist: /Library/WebServer/Documents/favicon.ico
-[Fri Oct 15 11:46:58 2010] [error] [client fe80::6233:4bff:fe29:3173] File does not exist: /Library/WebServer/Documents/favicon.ico
-
-# typical Express.js log output
-[Mon, 21 Nov 2011 20:52:11 GMT] 200 GET /foo (1ms)
-Blah, some other unstructured output to from a console.log call.
+Project Directory
+├── bower.json
+├── Gruntfile.js
+├── LICENSE
+├── package.json
+├── README.md
+├── src
+├── grunt-tasks
+│   ├── jshint.js
+│   ├── csslint.js
+│   ├── copy.js
                     </pre>
                 </section>
 
                 <section>
-                    <h3>»ELK« stack</h3>
-                    <ul>
-                        <li><strong>E</strong>lasticsearch (Storage/Search)</li>
-                        <li><strong>L</strong>ogstash (Logfile processor)</li>
-                        <li><strong>K</strong>ibana (Logfile viewer)</li>
-                    </ul>
-                </section>
+                    <h3>And for example one of the configuration objects could be defined as</h3>
 
-                <section>
-                    <h3>»ELK« stack</h3>
-
-                    <h5>Pro:</h5>
-                    <ul>
-                        <li class="fragment">Very powerful and extendable log analysis</li>
-                        <li class="fragment">Easy querying and visualization</li>
-                        <li class="fragment">Realtime search</li>
-                        <li class="fragment">Open Source</li>
-                    </ul>
-
-                    <h5 class="fragment">Con:</h5>
-                    <ul>
-                        <li class="fragment">Slightly more complex setup (Java, JRuby, etc.)</li>
-                        <li class="fragment">Thus might not fit for smaller projects/hosting solutions</li>
-                    </ul>
-                </section>
-
-                <section>
-                    <h3>Logstash</h3>
-
-                    <p>Turns messy data in different log formats …</p>
-                    <pre>
-# Apache access log
-10.0.1.22 - - [15/Oct/2010:11:46:46 -0700] "GET /favicon.ico HTTP/1.1" 404 209
-fe80::6233:4bff:fe29:3173 - - [15/Oct/2010:11:46:58 -0700] "GET / HTTP/1.1" 200 44
-
-# Apache error log
-[Fri Oct 15 11:46:46 2010] [error] [client 10.0.1.22] File does not exist: /Library/WebServer/Documents/favicon.ico
-[Fri Oct 15 11:46:58 2010] [error] [client fe80::6233:4bff:fe29:3173] File does not exist: /Library/WebServer/Documents/favicon.ico
-
-# typical Express.js log output
-[Mon, 21 Nov 2011 20:52:11 GMT] 200 GET /foo (1ms)
-Blah, some other unstructured output to from a console.log call.
-                    </pre>
-                </section>
-
-                <section>
-                    <h3>Logstash</h3>
-                    <p>… into structured output</p>
-                    <pre>
-{
-    "message" =&gt; "127.0.0.1 - - [11/Dec/2013:00:01:45 -0800…
- "@timestamp" =&gt; "2013-12-11T08:01:45.000Z",
-   "@version" =&gt; "1",
-       "host" =&gt; "cadenza",
-   "clientip" =&gt; "127.0.0.1",
-  "timestamp" =&gt; "11/Dec/2013:00:01:45 -0800",
-       "verb" =&gt; "GET",
-    "request" =&gt; "/xampp/status.php",
-"httpversion" =&gt; "1.1",
-   "response" =&gt; "200",
-      "bytes" =&gt; "3891",
-   "referrer" =&gt; "\"http://cadenza/xampp/navi.php\"",
-      "agent" =&gt; "\"Mozilla/5.0 (Macintosh; Intel Mac OS X…
-}
-                    </pre>
-                </section>
-
-                <section>
-                    <h3>Logstash</h3>
-
-                    <ul>
-                        <li class="fragment">Easily extendable to custom log formats</li>
-                        <li class="fragment">Read log information from file, Heroku, Redis, RabbitMQ, stdin, syslog, TCP, UDP, XMPP, ZeroMQ, …</li>
-                        <li class="fragment">Output to file, Ganglia, Graphite, Irc, Loggly, MongoDB, Nagios, RabbitMQ, Redis, Riak, S3, Statsd, Syslog, TCP, UDP, Websocket, XMPP, ZeroMQ, …</li>
-                    </ul>
-                </section>
-
-                <section>
-                    <h3>Kibana</h3>
-
-                    <p><img src="images/kibana-dashboard1.png" alt=""></p>
-                </section>
-
-                <section>
-                    <h3>Kibana</h3>
-
-                    <p><img src="images/kibana-dashboard2.png" alt=""></p>
+                    <pre><code class="javascript">
+module.exports = {
+    csslint: {
+      lax: {
+        rules: {
+          'box-sizing': false,
+          'adjoining-classes': false
+        },
+        src: [
+          PATH_ASSETS_CSS + '/*.css'
+        ]
+      }
+    }
+};
+                    </code></pre>
                 </section>
 
                 <section id="thanks">
