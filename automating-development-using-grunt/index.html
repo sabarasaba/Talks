@@ -10,11 +10,11 @@
 
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-        <link rel="stylesheet" href="../reveal.js/css/reveal.min.css">
-        <link rel="stylesheet" href="../reveal.js/css/theme/night.css">
+        <link rel="stylesheet" href="/reveal.js/css/reveal.min.css">
+        <link rel="stylesheet" href="/reveal.js/css/theme/night.css">
 
         <!-- For syntax highlighting -->
-        <link rel="stylesheet" href="../reveal.js/lib/css/sunburst.css">
+        <link rel="stylesheet" href="/reveal.js/lib/css/sunburst.css">
 
         <style>
             .reveal .slides { text-align: left; }
@@ -43,7 +43,7 @@
         </style>
 
         <!--[if lt IE 9]>
-        <script src="../reveal.js/lib/js/html5shiv.js"></script>
+        <script src="/reveal.js/lib/js/html5shiv.js"></script>
         <![endif]-->
     </head>
 
@@ -68,6 +68,7 @@
                         <li>What is Grunt</li>
                         <li>How do we use it</li>
                         <li>How do we optimize it</li>
+                        <li>How can we use it in Nestoria</li>
                     </ul>
                 </section>
 
@@ -86,6 +87,11 @@
                 </section>
 
                 <section>
+                    <h2>Configuration files:</h2>
+                    <img src="images/grunt-package.png" alt="">
+                </section>
+
+                <section>
                     <h2>Facts about Grunt:</h2>
                     <ul>
                         <li class="fragment">7700 stars on github</li>
@@ -101,6 +107,7 @@
                     <ul class="fragment">
                         <li>Twitter</li>
                         <li>jQuery</li>
+                        <li>Angular.js</li>
                         <li>Adobe</li>
                         <li>Saucelabs</li>
                         <li>Modernizr</li>
@@ -114,7 +121,7 @@
 
                 <section>
                     <h3>But what can we do with it ?</h3>
-                    <p>EVERYTHING. Even pankackes.</p>
+                    <p>EVERYTHING. Even pancakes.</p>
                 </section>
 
                 <section>
@@ -126,7 +133,7 @@
                       <li class="fragment">Optimizing documents (concatenating js/css, minifying..)</li>
                       <li class="fragment">TESTS, TESTS, TESTS</li>
                       <li class="fragment">Automatically reload/rebuild on file change (watchers)</li>
-                      <li class="fragment">Precompiling templates, less, sass, ocss, etc</li>
+                      <li class="fragment">Precompiling templates, less, sass, oocss, etc</li>
                       <li class="fragment">And much much more..</li>
                     </ul>
                 </section>
@@ -140,8 +147,8 @@
                     <h3>Instalation is quite straight forward</h3>
                     <pre><code class="bash" data-trim>
 # Install nodejs and npm
-tar -zxf node-v0.6.18.tar.gz
-cd node-v0.6.18
+tar -zxf node-v0.10.26.tar.gz
+cd node-v0.10.26
 ./configure && make && sudo make install
 
 # Install grunt
@@ -150,7 +157,21 @@ sudo npm install -g grunt-cli
                 </section>
 
                 <section>
-                    <h3>Sample Gruntfile</h3>
+                    <h3>Basic grunt config</h3>
+                    <pre><code class="javascript" data-trim>
+module.exports = function(grunt) {
+  'use strict';
+
+  // Set up grunt
+};
+
+                    </code></pre>
+                    <p>Boring.. lets add some tasks..</p>
+                </section>
+
+                <section>
+                    <h3>Lets add a tasks for copying files..</h3>
+                    <a href="https://gist.github.com/sabarasaba/fe56a73b39651ebb7704">Open Gist</a>
                     <pre><code class="javascript" data-trim>
 module.exports = function(grunt) {
   'use strict';
@@ -185,8 +206,7 @@ module.exports = function(grunt) {
                 </section>
 
                 <section>
-                    <h3>Lets add some more tasks..</h3>
-                    <p>For linting javascript files..</p>
+                    <h3>And also one for linting our JS files..</h3>
 
                     <pre><code class="javascript" data-trim>
 jshint: {
@@ -202,7 +222,7 @@ grunt.loadNpmTasks('grunt-contrib-jshint');
                 </section>
 
                 <section>
-                    <p>And for linting our css files</p>
+                    <p>And for linting our css files..</p>
 
                     <pre><code class="javascript" data-trim>
 csslint: {
@@ -226,7 +246,7 @@ grunt.loadNpmTasks('grunt-contrib-csslint');
                 </section>
 
                 <section>
-                    <h3>As we start to add more tasks our gruntfile will become harder to maintain</h3>
+                    <h3>As we start to add more tasks our Gruntfile will become harder to maintain</h3>
                     <p><img src="images/unmaintanable.jpg" height="400px" alt=""></p>
                     <h2 class="fragment">NO</h2>
                     <h4 class="fragment">But how do we solve it ?</h4>
@@ -234,12 +254,12 @@ grunt.loadNpmTasks('grunt-contrib-csslint');
 
                 <section>
                     <h2>We modularize!</h2>
-                    <p>Taking advantage of CommonJS modules of Node</p>
+                    <p>Taking advantage of the CommonJS modules from Node</p>
                 </section>
 
                 <section>
                     <h3>So this:</h3>
-
+                    <a href="https://gist.github.com/sabarasaba/52022a03bc4b86776d70">Open Gist</a>
                     <pre><code class="javascript" data-trim>
 csslint: {
   lax: {
@@ -268,7 +288,7 @@ grunt.loadNpmTasks('grunt-contrib-csslint');
 
                 <section>
                     <h3>Becomes into:</h3>
-
+                    <a href="https://gist.github.com/sabarasaba/5b37ca6d7ce753b7f00e">Open Gist</a>
                     <pre><code class="javascript">
 module.exports = function(grunt) {
   require('load-grunt-config')(grunt);
@@ -298,7 +318,7 @@ Project Directory
                 </section>
 
                 <section>
-                    <h3>And for example one of the configuration objects could be defined as</h3>
+                    <h3>Then, the configuration objects can be defined as</h3>
 
                     <pre><code class="javascript">
 module.exports = {
@@ -321,8 +341,30 @@ module.exports = {
                     <h3>But how can we use it to improve Nestoria?</h3>
                 </section>
 
+                <section>
+                    <h3>We could:</h3>
+                    <ul>
+                        <li class="fragment">Have a centralized configuration point for all the FE assets</li>
+                        <li class="fragment">Compile less files, lint css, lint js</li>
+                        <li class="fragment">Optimize assets, concatenate & minify</li>
+                        <li class="fragment">Running our FE tests on multiple devices and getting the results on the Terminal</li>
+                        <li class="fragment">Automatically reloading nestoria on the browser when an asset gets modified</li>
+                        <li class="fragment">Making image sprites (but executing Savios perl module, since all of the others image sprites makers are crap)</li>
+                        <li class="fragment">and much more..</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h3>This also opens the door for new things like:</h3>
+                    <ul>
+                        <li class="fragment">Lint our mason templates against the WAI-ARIA spec</li>
+                        <li class="fragment">Optimization of AMD modules if we ever think about using them on our Front-End</li>
+                        <li class="fragment">Getting metrics of our codebase (uncss, grunt-css-metrics)</li>
+                    </ul>
+                </section>
+
                 <section id="thanks">
-                    <h2>That's all folks!</h2>
+                    <h2>That's all!</h2>
 
                     <h6>Ignacio Rivas</h6>
                     <dl>
@@ -334,15 +376,14 @@ module.exports = {
                         <dd><a href="http://ignaciorivas.me/">ignaciorivas.me</a></dd>
                     </dl>
 
-
                 </section>
 
             </div>
 
         </div>
 
-        <script src="../reveal.js/lib/js/head.min.js"></script>
-        <script src="../reveal.js/js/reveal.min.js"></script>
+        <script src="/reveal.js/lib/js/head.min.js"></script>
+        <script src="/reveal.js/js/reveal.min.js"></script>
 
         <script>
 
@@ -361,10 +402,10 @@ module.exports = {
 
                 // Optional libraries used to extend on reveal.js
                 dependencies: [
-                    { src: '../reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
-                    { src: '../reveal.js/lib/js/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
-                    { src: '../reveal.js/lib/js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
-                    { src: '../reveal.js/lib/js/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+                    { src: '/reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+                    { src: '/reveal.js/lib/js/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+                    { src: '/reveal.js/lib/js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+                    { src: '/reveal.js/lib/js/notes.js', async: true, condition: function() { return !!document.body.classList; } }
                 ]
             });
 
