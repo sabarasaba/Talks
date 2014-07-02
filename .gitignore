@@ -2,5 +2,5 @@
 .svn
 log/*.log
 tmp/**
-webcomponents-talk/node_modules/
-webcomponents-talk/.sass-cache
+webcomponents-now/node_modules/
+webcomponents-now/.sass-cache/
