@@ -1,0 +1,455 @@
+@font-face {
+  font-family: 'source_code_proregular';
+  src: url('../fonts/sourcecodepro-regular-webfont.eot');
+  src: url('../fonts/sourcecodepro-regular-webfont.eot?#iefix') format('embedded-opentype'),
+       url('../fonts/sourcecodepro-regular-webfont.woff') format('woff'),
+       url('../fonts/sourcecodepro-regular-webfont.ttf') format('truetype'),
+       url('../fonts/sourcecodepro-regular-webfont.svg#source_code_proregular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'capture_itregular';
+  src: url('../fonts/capture_it-webfont.eot');
+  src: url('../fonts/capture_it-webfont.eot?#iefix') format('embedded-opentype'),
+       url('../fonts/capture_it-webfont.woff') format('woff'),
+       url('../fonts/capture_it-webfont.ttf') format('truetype'),
+       url('../fonts/capture_it-webfont.svg#capture_itregular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'league_gothicitalic';
+  src: url('../fonts/leaguegothic-italic-webfont.eot');
+  src: url('../fonts/leaguegothic-italic-webfont.eot?#iefix') format('embedded-opentype'),
+       url('../fonts/leaguegothic-italic-webfont.woff') format('woff'),
+       url('../fonts/leaguegothic-italic-webfont.ttf') format('truetype'),
+       url('../fonts/leaguegothic-italic-webfont.svg#league_gothicitalic') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'league_gothicregular';
+  src: url('../fonts/leaguegothic-regular-webfont.eot');
+  src: url('../fonts/leaguegothic-regular-webfont.eot?#iefix') format('embedded-opentype'),
+       url('../fonts/leaguegothic-regular-webfont.woff') format('woff'),
+       url('../fonts/leaguegothic-regular-webfont.ttf') format('truetype'),
+       url('../fonts/leaguegothic-regular-webfont.svg#league_gothicregular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Open Sans Condensed';
+  src: url('../fonts/opensans-condbold-webfont.eot');
+  src: url('../fonts/opensans-condbold-webfont.eot?#iefix') format('embedded-opentype'),
+       url('../fonts/opensans-condbold-webfont.woff') format('woff'),
+       url('../fonts/opensans-condbold-webfont.ttf') format('truetype'),
+       url('../fonts/opensans-condbold-webfont.svg#open_sans_condensedbold') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  var-text-color: green;
+  var-header-font: Courier;
+}
+
+video {
+  width: 600px;
+}
+
+.reveal sup {
+  font-size: 0.6em;
+}
+
+.reveal h1,
+.reveal h2,
+.reveal h3,
+.reveal h4,
+.reveal h5,
+.reveal h6 {
+  line-height: 1em;
+}
+
+/* This style is baked in for the applyAuthorStyles demo */
+h3 {
+  margin: 0 0 20px 0;
+  color: #333333;
+  font-family: "Quicksand", sans-serif;
+  letter-spacing: -0.08em;
+  text-transform: uppercase;
+  text-shadow: none;
+  font-weight: normal;
+  font-size: 1.55em;
+}
+
+/**
+ * Demos
+ */
+
+div[data-pie] {
+  width: 200px;
+  height: 200px;
+  display: block;
+  margin: 20px auto;
+}
+
+.reveal .demo-code {
+  position: relative;
+  margin-bottom: 10px;
+}
+
+.demo-btn {
+  position: absolute;
+  right: 60px;
+  bottom: 10px;
+}
+
+.reveal .demo .widget {
+  box-sizing: border-box;
+  width: 90%;
+  border: 2px dashed gray;
+  margin: 15px auto;
+  padding: 0 40px;
+}
+
+/* This style seems funny but it's here to illustrate a :host example */
+.reveal .demo .widget-borderless {
+  box-sizing: border-box;
+  width: 90%;
+  margin: 15px auto;
+  padding: 0 40px;
+}
+
+.reveal .demo .widget.expand {
+  padding: 30px;
+}
+
+#demo-templates,
+#demo-content {
+  height: 600px;
+}
+
+.jigglypuff {
+  position: absolute;
+  -webkit-transform: rotate(-15deg);
+  width: 450px;
+  transition: bottom 0.3s ease !important;
+  bottom: -1000px;
+}
+
+.jigglypuff.in {
+  bottom: -350px;
+}
+
+#bio {
+  display: inline-block;
+}
+
+input[type="text"] {
+  font-size: 20px;
+  padding: 3px;
+}
+
+.reveal .mailchimp {
+  margin: 0 auto 40px;
+}
+
+.reveal .moment {
+  margin: 0 auto 50px;
+  font-size: 41px;
+}
+
+.reveal .moment:last-child {
+  margin-bottom: 30px;
+}
+
+.reveal .moment-code > div {
+  position: relative;
+}
+
+.reveal .moment-code pre {
+  position: absolute;
+  font-size: 30px;
+  line-height: 1.3em;
+}
+
+moment-now,
+moment-format,
+moment-parse,
+moment-from {
+  padding: 3px 10px;
+  background: tomato;
+  color: white;
+}
+
+/**
+ * Voices
+ */
+
+.voice.voice-human {
+  text-transform: none;
+}
+
+.voice.voice-loud {
+  text-transform: uppercase;
+}
+
+/**
+ * Helpers
+ */
+
+.faded {
+  opacity: 0.3;
+}
+
+.left-align {
+  text-align: left;
+}
+.demo.left-align .widget {
+  text-align: center;
+  margin-left: 0;
+  margin-right: 0;
+  width: 100%;
+}
+
+.center-align {
+  text-align: center;
+}
+
+.left {
+  float: left;
+}
+
+.right {
+  float: right;
+}
+
+.wrap {
+  overflow: hidden;
+}
+
+.hidden {
+  display: none;
+}
+
+.reveal .normal-letters {
+  letter-spacing: normal;
+}
+
+.wide-rule {
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+.blink {
+  -webkit-animation: blink 1s steps(5, start) infinite;
+  -moz-animation: blink 1s steps(5, start) infinite;
+  animation: blink 1s steps(5, start) infinite;
+}
+@keyframes blink {
+  to {
+    visibility: hidden;
+  }
+}
+
+.supported {
+  color: #387D7E;
+}
+
+.not-supported {
+  color: #d14;
+}
+
+.marginless {
+  margin: 0 !important;
+}
+
+.reveal pre.full-bleed {
+  margin: 0;
+  width: 100%;
+  font-size: 29px;
+}
+
+.lighten {
+  color: gray;
+}
+
+.reveal .flex-container {
+  display: flex;
+  height: 220px;
+  width: 90%;
+  margin: 15px auto 50px;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  align-items: stretch;
+  align-content: stretch;
+}
+
+/**
+ * Extensions
+ */
+
+.reveal .billboard {
+  font-family: 'league_gothicregular';
+  letter-spacing: 5px;
+}
+
+.reveal .stencil {
+  font-family: 'capture_itregular';
+  letter-spacing: 5px;
+}
+
+.reveal .strong {
+  font-weight: bold;
+}
+
+.reveal section .chromeless {
+  border: none;
+  box-shadow: none;
+  background: none;
+}
+
+.reveal .alert-box {
+  font-size: 110px;
+  color: white;
+  font-family: 'Open Sans';
+  letter-spacing: 2px;
+  background: rgba(229, 139, 68, 0.5);
+  padding: 15px;
+}
+
+/**
+ * Standard CSS classes for charred-trail. Visible elements that are not
+ * currently in focus get an opacity of 30%.
+ */
+
+.reveal .slides section .fragment.fragment-hidden { opacity: 0; }
+
+.reveal .slides section .fragment.burn.fade-out.visible,
+.reveal .slides section .fragment.burn { opacity: 0.3; }
+
+.reveal .slides section .fragment.burn.fade-out,
+.reveal .slides section .fragment.visible.no-burn,
+.reveal .slides section .fragment.visible.focus { opacity: 1; }
+
+.reveal .slides section code .fragment.force-focus { opacity: 1 !important; }
+
+/*.reveal .slides section .fragment.fragment-hidden { opacity: 0; }
+.reveal .slides section .fragment.burn { opacity: 1; background: rgba(0, 0, 0, 0); }
+.reveal .slides section .fragment.visible.no-burn,
+.reveal .slides section .fragment.visible.focus { background: rgb(0, 200, 0); }
+.reveal .slides section code .fragment.force-focus { opacity: 1 !important; }*/
+
+.reveal i {
+  font-family: "FontAwesome";
+  font-style: normal;
+  font-weight: normal;
+  line-height: normal;
+  vertical-align: baseline;
+  margin-top: 0;
+}
+
+.reveal pre {
+  font-size: 0.6em;
+}
+
+.reveal pre code {
+  font-family: 'source_code_proregular';
+  max-height: 600px;
+}
+
+.reveal .unstyled-list {
+  list-style-type: none;
+  margin-left: 5px;
+}
+
+.reveal .contact-info {
+  font-size: 26px
+}
+
+.reveal .definition {
+  margin-bottom: 30px;
+}
+
+.reveal .definition:first-child {
+  margin-top: 40px;
+}
+
+.reveal .spec-list {
+  text-align: left;
+  display: inline-block;
+}
+.reveal .spec-list .spec-name {
+  font-size: 65px;
+  margin-bottom: 5px;
+}
+.reveal .spec-list .spec-definition {
+  font-size: 50px;
+  margin-bottom: 35px;
+}
+.reveal .spec-list .spec-definition:last-child {
+  margin-bottom: 0;
+}
+
+.reveal .ribbon-wrapper-blue {
+  width: 85px;
+  height: 88px;
+  overflow: hidden;
+  position: absolute;
+  top: -2px;
+  right: 45px;
+}
+
+.reveal .ribbon-container {
+  position: relative;
+}
+
+.reveal .ribbon-blue {
+  font-size: 15px;
+  text-align: center;
+  letter-spacing: normal;
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  transform: rotate(45deg);
+  position: relative;
+  padding: 7px 0;
+  line-height: 15px;
+  left: -5px;
+  top: 13px;
+  width: 120px;
+  background: -webkit-gradient(linear, left top, left bottom, from(#2B5865), to(#1C1F38));
+  color: white;
+  box-shadow: 0 0 3px 2px rgba(0,0,0,0.3);
+}
+
+.reveal .ribbon-blue:before, .ribbon-blue:after {
+  content: "";
+  /* Colour of the triangle. To flip the effect, use border-bottom. */
+  border-top: 3px solid #6e8900;   
+  border-left: 3px solid transparent;
+  border-right: 3px solid transparent;
+  position:absolute;
+  bottom: -3px; /* +1 to compensate for the border */
+}
+
+.reveal .ribbon-blue:before {
+  left: 0;
+}
+.reveal .ribbon-blue:after {
+  right: 0;
+}
+
+/**
+ * Icons
+ */
+
+.icon-heart {
+  color: #d14;
+}
