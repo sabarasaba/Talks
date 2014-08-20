@@ -1,0 +1,470 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+
+    <title>Web Components, the future of the web</title>
+
+    <meta name="description" content="Web Components, the future of the web">
+    <meta name="author" content="Ignacio Rivas">
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="css/reveal.min.css">
+    <link rel="stylesheet" href="css/theme/sky.css" id="theme">
+
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/github.css">
+
+    <!-- For icons -->
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+
+    <!-- Our styles -->
+    <link rel="stylesheet" href="css/styles.css" id="styles">
+
+    <script src="lib/js/head.min.js"></script>
+    
+
+    <!-- If the query includes 'print-pdf', use the PDF print sheet -->
+    <!--<script>
+      document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+    </script>-->
+
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+
+    <!-- Custom Elements -->
+    <!-- Include any js libraries that our elements use -->
+    <script src="./lib/js/chart.min.js"></script>
+    <script src="./lib/js/moment.js"></script>
+    <script src="./lib/js/markdown.js"></script>
+    <script src="./lib/js/polymer.min.js"></script>
+    <!-- Import all custom elements -->
+    <link rel="import" href="./imports/mark-down.html">
+    <link rel="import" href="./imports/mailchimp.html">
+    <link rel="import" href="./imports/google-analytics.html">
+    <link rel="import" href="./imports/moment.html">
+    <link rel="import" href="./imports/demos.html">
+    <link rel="import" href="./imports/polymer-elements.html">
+    <link rel="import" href="./imports/polymer-layout.html">
+    <!-- Specific import for the 'imports' section of the talk -->
+    <link rel="import" href="./imports/blog-post.html">
+  </head>
+
+  <body>
+    <!-- <header class="brand">
+        <img src="./img/nestoria-logo.png" alt="">
+    </header> -->
+
+    <div class="reveal">
+
+      <!-- Any section element inside of this container is displayed as a slide -->
+      <div class="slides" style="zoom: 1 !important;">
+
+        <section class="left-align">
+          <h2 class="voice voice-human">Web Components,</h2>
+          <h2 class="voice voice-human">The future of the web.</h2>
+          <hr class="wide-rule">
+          <h4 style="text-transform: none;"><a href="http://github.com/sabarasaba"><i class="icon-github-sign"></i> sabarasaba</a></h4>
+          <h4 style="text-transform: none;"><a href="http://www.nestoria.com/"><i class=""></i> Frontend Engineer @ Nestoria</a></h4>
+        </section>
+
+<!--         <section>
+          <h2 class="left-align voice voice-human" style="font-size: 90px;">Within this talk...</h2>
+          <hr>
+          <h3 class="left-align voice voice-human" style="font-size: 70px;">Web components?</h3>
+          <h3 class="left-align voice voice-human" style="font-size: 70px;">The specs</h3>
+          <h3 class="left-align voice voice-human" style="font-size: 70px;">Use them today!</h3>
+        </section> -->
+
+        <section data-background="./img/wrestler.gif">
+          <h2 class="blink alert-box"><i class="icon-warning-sign"></i> Code Ahead!</h2>
+        </section>
+
+        <section class="left-align">
+          <h2>How many of you have used bootstrap before ?</h2>
+        </section>
+
+        <!-- Im sure you'll be very familiar with this process -->
+
+        <section>
+          <img style="height: 500px;" src="./img/bootstrap.png" alt="bootstrappin">
+          <h2>1. Go to the documentation</h2>
+        </section>
+
+        <section>
+          <!-- <img class="chromeless" style="width: 100%; max-width: 100%;" src="./img/bs-navbar.png" alt="bootstrap navbar"> -->
+          <pre style="font-size: 16px; height: 500px; overflow: hidden; margin-bottom: 15px; border: 4px solid #333333; box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);"><code data-trim>
+<nav class="navbar navbar-default" role="navigation">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Brand</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="#">Link</a></li>
+        <li><a href="#">Link</a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#">Action</a></li>
+            <li><a href="#">Another action</a></li>
+            <li><a href="#">Something else here</a></li>
+            <li class="divider"></li>
+            <li><a href="#">Separated link</a></li>
+            <li class="divider"></li>
+            <li><a href="#">One more separated link</a></li>
+          </ul>
+        </li>
+      </ul>
+      <form class="navbar-form navbar-left" role="search">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Search">
+        </div>
+        <button type="submit" class="btn btn-default">Submit</button>
+      </form>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#">Link</a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#">Action</a></li>
+            <li><a href="#">Another action</a></li>
+            <li><a href="#">Something else here</a></li>
+            <li class="divider"></li>
+            <li><a href="#">Separated link</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+          </code></pre>
+          <h2>2. Copy a massive chunk of code</h2>
+        </section>
+
+        <section>
+          <img src="./img/bs-navbar.png" style="width: 95%;" alt="bootstrap navbar">
+          <h2>3. Get a widget</h2>
+        </section>
+
+        <section data-background="./img/FqliAot.gif">
+          <img style="margin-left: 35%; margin-top: -20%;" class="chromeless" width="700px" src="./img/you.png">
+        </section>
+
+        <section>
+          <h1 style="font-size: 109px;">What if..</h1>
+        </section>
+
+        <section>
+          <pre style="font-size: 16px; height: 500px; overflow: hidden; margin-bottom: 15px; border: 4px solid #333333; box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);"><code data-trim>
+<nav class="navbar navbar-default" role="navigation">
+  <!-- Brand and toggle get grouped for better mobile display -->
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <a class="navbar-brand" href="#">Brand</a>
+  </div>
+
+  <!-- Collect the nav links, forms, and other content for toggling -->
+  <div class="collapse navbar-collapse navbar-ex1-collapse">
+    <ul class="nav navbar-nav">
+      <li class="active"><a href="#">Link</a></li>
+      <li><a href="#">Link</a></li>
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+          <li><a href="#">Action</a></li>
+          <li><a href="#">Another action</a></li>
+          <li><a href="#">Something else here</a></li>
+          <li><a href="#">Separated link</a></li>
+          <li><a href="#">One more separated link</a></li>
+        </ul>
+      </li>
+    </ul>
+    <form class="navbar-form navbar-left" role="search">
+      <div class="form-group">
+        <input type="text" class="form-control" placeholder="Search">
+      </div>
+      <button type="submit" class="btn btn-default">Submit</button>
+    </form>
+    <ul class="nav navbar-nav navbar-right">
+      <li><a href="#">Link</a></li>
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+          <li><a href="#">Action</a></li>
+          <li><a href="#">Another action</a></li>
+          <li><a href="#">Something else here</a></li>
+          <li><a href="#">Separated link</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div><!-- /.navbar-collapse -->
+</nav>
+          </code></pre>
+          <h2>
+            <span style="color: red; text-decoration: line-through;">
+              <span style="color: #333;">2. Copy a massive chunk of code</span>
+            </span>
+          </h2>
+        </section>
+
+        <section>
+          <pre style="font-size: 25px; width: 1000px; margin-bottom: 15px; border: 4px solid #333333; box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);"><code data-trim>
+<core-menu-button selected="0">
+  <core-item icon="settings" label="Settings">Settings</core-item>
+  <core-item icon="dialog" label="Dialog">Dialog</core-item>
+  <core-item icon="search" label="Search">Search</core-item>
+</core-menu-button>
+          </code></pre>
+          <h2>2. Use the actual widget</h2>
+        </section>
+
+        <section style="text-align: left;">
+          <h2>Web Components!</h2>
+          <br>
+          <h3 class="fragment">1. Create your own HTML Elements</h3>
+          <h3 class="fragment">2. Encapsulate your styles</h3>
+          <h3 class="fragment">3. React with lifecycle callbacks</h3>
+
+          <aside class="notes">
+            <p>There's actually 4 technologies that make up web components</p>
+            <p>And we're going to go through each of them</p>
+          </aside>
+        </section>
+
+        <section>
+          <div class="spec-list">
+            <h2 class="spec-name">Templates</h2>
+            <h3 class="voice voice-human spec-definition"><em>Scaffolding</em></h3>
+            <h2 class="spec-name fragment" data-fragment-index="1">Shadow DOM</h2>
+            <h3 class="voice voice-human spec-definition fragment" data-fragment-index="1"><em>Encapsulation</em></h3>
+            <h2 class="spec-name fragment" data-fragment-index="2">Custom Elements</h2>
+            <h3 class="voice voice-human spec-definition fragment" data-fragment-index="2"><em>Extensions</em></h3>
+            <h2 class="spec-name fragment" data-fragment-index="3">Imports</h2>
+            <h3 class="voice voice-human spec-definition fragment" data-fragment-index="3"><em>Packaging</em></h3>
+          </div>
+          <aside class="notes">
+            <p>Templates: Just like mustache</p>
+            <p>Shadow DOM: Some things public and other things private</p>
+            <p>Custom Elements: The interface</p>
+          </aside>
+        </section>
+
+        <section>
+          <h2>You can start using them today!</h2>
+        </section>
+
+        <section>
+          <h1>Polymer</h1>
+        </section>
+
+        <section class="left-align">
+          <h2>A collection of <strong>polyfills</strong> which let us use Web Components in <strong>all modern browsers.</strong></h2>
+          <br><br><br>
+          <h5>Latest 2 versions of all browsers. (IE 10+, Safari 6+)</h5>
+          <aside class="notes">
+            IE 10+
+            Safari 6+
+          </aside>
+        </section>
+
+        <section class="left-align">
+          <h2><em>Also</em> a <strong>framework</strong> for building applications with <strong>web components.</strong></h2>
+        </section>
+
+        <section class="left-align">
+          <h3>Polymer Extras</h3>
+          <hr>
+          <h3><i class="icon-ok-circle supported"></i> Web Animations</h3>
+          <h3><i class="icon-ok-circle supported"></i> Pointer Events</h3>
+          <h3><i class="icon-ok-circle supported"></i> Template Binding</h3>
+          <h3><i class="icon-ok-circle supported"></i> Node.bind()</h3>
+          <h3><i class="icon-ok-circle supported"></i> Model-driven Views (MDV)</h3>
+        </section>
+
+        <section class="demo">
+          <h3>Basic Polymer Element</h3>
+          <pre style="font-size: 27px;"><code data-trim data-noescape contenteditable style="margin-top: 20px;">
+<span class="fragment burn" data-fragment-index="1">&lt;script src="polymer.js"&gt;&lt;/script&gt;</span>
+          </code></pre>
+
+          <pre style="font-size: 27px;"><code data-trim data-noescape contenteditable style="margin-top: 20px;">
+<span class="fragment burn" data-fragment-index="2">&lt;polymer-element name="my-element"&gt;</span>
+  <span class="fragment burn" data-fragment-index="3">&lt;template&gt;
+    &lt;h2&gt;
+      Hello, I'm a Polymer element
+    &lt;/h2&gt;
+  &lt;/template&gt;</span>
+  <span class="fragment burn" data-fragment-index="4">&lt;script&gt;Polymer("my-element");&lt;/script&gt;</span>
+<span class="fragment burn" data-fragment-index="2">&lt;/polymer-element&gt;</span>
+          </code></pre>
+
+          <pre style="font-size: 27px;"><code data-trim data-noescape contenteditable style="margin-top: 20px;">
+<span class="fragment burn" data-fragment-index="5">&lt;!-- Ready to rock! --&gt;
+&lt;my-element&gt;&lt;/my-element&gt;</span>
+          </code></pre>
+
+          <div class="widget">
+            <my-element></my-element>
+          </div>
+        </section>
+
+        <section class="demo">
+          <h3>Live Bindings</h3>
+          <pre style="font-size: 24px;"><code data-trim data-noescape contenteditable style="margin-top: 20px;">
+<span class="fragment burn" data-fragment-index="1">&lt;polymer-element name="color-picker" attributes="color"&gt;</span>
+  <span class="fragment burn" data-fragment-index="2">&lt;template&gt;
+    &lt;p&gt;My favorite color is
+      &lt;span style="background: {{ color }}"&gt;{{ color }}&lt;/span&gt;
+    &lt;/p&gt;
+    &lt;input type="text" value="{{ color }}"&gt;
+  &lt;/template&gt;</span>
+  <span class="fragment burn" data-fragment-index="3">&lt;script&gt;
+    Polymer("color-picker", { color: "Tomato" });
+  &lt;/script&gt;</span>
+<span class="fragment burn" data-fragment-index="1">&lt;/polymer-element&gt;</span>
+          </code></pre>
+
+          <div class="widget">
+            <!-- disable-events is something I added to kill reveal.js key listeners -->
+            <color-picker data-disable-events="true"></color-picker>
+          </div>
+        </section>
+
+        <section class="demo">
+          <h4>Polymer core-scroll-header-panel</h4>
+          <pre style="font-size: 13px;"><code data-trim data-noescape contenteditable style="margin-top: 20px;">
+&lt;core-scroll-header-panel condenses&gt;
+
+  &lt;core-toolbar class="tall"&gt;
+    &lt;core-icon-button icon="arrow-back"&gt;&lt;/core-icon-button&gt;
+    &lt;div flex&gt;&lt;/div&gt;
+    &lt;core-icon-button icon="search"&gt;&lt;/core-icon-button&gt;
+    &lt;core-icon-button icon="more-vert"&gt;&lt;/core-icon-button&gt;
+    &lt;div class="bottom indent title"&gt;Title&lt;/div&gt;
+  &lt;/core-toolbar&gt;
+  
+  &lt;div class="content"&gt;
+    &lt;lorem-ipsum paragraphs="100"&gt;&lt;/lorem-ipsum&gt;
+  &lt;/div&gt;
+
+&lt;/core-scroll-header-panel&gt;
+          </code></pre>
+
+          <div class="widget">
+            <!-- disable-events is something I added to kill reveal.js key listeners -->
+            <iframe data-disable-events="true" src="http://www.polymer-project.org/components/core-scroll-header-panel/demo.html" style="width:100%; height:500px;"></iframe>
+          </div>
+        </section>
+
+        <section>
+          <h2><strong>There's a lot more!</strong></h2>
+        </section>
+
+        <section class="left-align">
+          <h3>Polymer also solves one of the most difficult problems in computer science</h3>
+          <br>
+          
+          <h3 class="left-align voice voice-human fragment">
+            <strong>How to align a god damn div vertically and horizontally</strong>
+          </h3>
+        </section>
+
+        <section data-background="./img/bewildeered.gif">
+        </section>
+
+        <section class="demo">
+          <h3>Layout elements</h3>
+          <pre style="font-size: 24px;"><code data-trim data-noescape contenteditable style="margin-top: 20px;">
+&lt;div layout horizontal center center-justified&gt;
+  &lt;div>OMG, Centered!&lt;/div&gt;
+&lt;/div&gt;
+          </code></pre>
+
+          <div class="widget" style="height: 300px;">
+            <!-- disable-events is something I added to kill reveal.js key listeners -->
+            <div layout horizontal center center-justified style="height: 100%;">
+              <div>OMG, Centered!</div>
+            </div>
+          </div>
+
+        </section>
+
+        <section data-background="./img/excited-oh.gif">
+        </section>
+
+        <section class="left-align">
+          <h3>More resources</h3>
+          <hr>
+          <h4><a href="http://ebidel.github.io/webcomponents/">Web Components Resources</a></h4>
+          <h4><a href="http://www.polymer-project.org/docs/elements/">Polymer Elements</a></h4>
+          <h4><a href="http://customelements.io/">CustomElements.io</a></h4>
+          <h4><a href="https://www.google.com/#fp=501e3a7c68104311&q=(site%3Ahtml5rocks.com+inurl%3Awebcomponents)+OR+(site%3Aupdates.html5rocks.com+webcomponents)">HTML5 Rocks</a></h4>
+          <h4><a href="http://www.x-tags.org/">X-Tags</a></h4>
+        </section>
+
+        <section>
+          <h1 style="margin-top: 150px;"><strong>Thanks!</strong></h1>
+          <h3><a href="http://ignaciorivas.me">Ignacio</a> / <a href="http://twitter.com/sabarasaba">@sabarasaba</a></h3>
+          <img src="./img/heart2.gif" class="chromeless" width="100px" style="margin-left: 250px;">
+        </section>
+      </div>
+    </div>
+
+    <script src="js/reveal.js"></script>
+
+    <script>
+
+      // Full list of configuration options available here:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        controls: false,
+        progress: true,
+        history: true,
+        center: true,
+
+        theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+        transition: Reveal.getQueryHash().transition || 'none', // default/cube/page/concave/zoom/linear/fade/none
+
+        // Optional libraries used to extend on reveal.js
+        dependencies: [
+          { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+          // { src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+          { src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } },
+          {
+            src: 'plugin/charred-trail/charred-trail.js',
+            async: true,
+            condition: function() { return !!document.body.classList; }
+          }
+        ]
+      });
+
+    </script>
+    
+    <script src="./js/app.js"></script>
+    
+  </body>
+</html>
